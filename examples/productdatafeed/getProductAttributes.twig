@@ -1,3 +1,5 @@
+set task = data.task
+
 set product = context.session.item('product')
 
 set properties = product.properties
@@ -8,13 +10,13 @@ set id = product.supplierProductId|left(50)
 set shortDescription = properties.shortDescription|left(150)
 set longDescription = properties.longDescription|left(5000)|default('DESCRIPTION MISSING')
 
-set productLink = data.task.setTemplateName('getProductLink').process
+set productLink = task.setTemplateName('getProductLink').process
 
-set imageLink = data.task.setTemplateName('getImageLink').process
+set imageLink = task.setTemplateName('getImageLink').process
 
-set price = data.task.setTemplateName('getPrice').process
+set price = task.setTemplateName('getPrice').process
 
-set gtin = data.task.setTemplateName('getGtin').process
+set gtin = task.setTemplateName('getGtin').process
 
 set productAttributes = [ id, shortDescription, longDescription, productLink, imageLink, 'in_stock', price, gtin, 'neu', 'nein', 'DE::10 EUR' ]
 
