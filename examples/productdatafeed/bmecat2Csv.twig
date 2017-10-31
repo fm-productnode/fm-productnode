@@ -1,0 +1,50 @@
+//
+// Creating a csv formatted product data feed from a BMEcat-2005 product catalog
+//
+// Author: Franz Muehlbauer, info@fm-productnode.de
+//
+// Template hierarchy:
+//   bmecat2csv
+//   +- getProductAttributes
+//      +- getProductLink
+//      +- getImageLink
+//      +- getPrice
+//      +- getGtin
+//
+// It is assumed that the templates are located in the workplace/template/twig directory.
+//
+
+set log = utilities.log('INFO')
+do context.session.addItem('log', log)
+
+set language = language|default('deu')
+set viewer = repository.currentCatalog.viewer(language)
+set lastProductIndex = viewer.productCount - 1
+
+if lastProductIndex < 0
+	do log.warn('Der Produktkatalog enthält keine Produkte!')
+else
+	do log.info('Der Produktkatalog enthält ' ~ viewer.productCount ~ ' Produkte.')
+
+  set dataFeedPath = dataFeedPath|default('productDataFeed.txt')
+
+  set header = [ 'ID', 'Titel', 'Beschreibung', 'Link', 'Bildlink', 'Verfügbarkeit', 'Preis', 'gtin', 'Zustand', 'nicht_​jugendfrei', 'Versandkosten' ]
+  set writer = data.csv.writer(dataFeedPath)
+  do writer.setDelimiter("\t").setEnclosure('"')
+  do writer.insertOne(header)
+
+  for productIndex in 0..lastProductIndex
+    set product = viewer.productByIndex(productIndex)
+		do context.session.addItem('product', product)
+		
+		do data.task.setTemplateName('getProductAttributes').process
+
+    set productAttributes = context.session.item('attributes')
+    do writer.insertOne(productAttributes)
+
+  	do log.info('Produkt Nr. ' ~ (productIndex + 1) ~ ' in CSV-Datei geschrieben!')
+  endfor
+
+	do log.info('CSV-Datei erstellt.')
+endif
+
