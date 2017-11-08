@@ -1,0 +1,22 @@
+set log = context.session.item('log')
+
+set spreadsheet = context.session.item('spreadsheet')
+
+set csvWriter = office.csvWriter(spreadsheet)
+
+set spreadsheetPath = context.session.item('spreadsheetPath')
+
+set csvSuffix = '.csv'
+set csvPath = spreadsheetPath ~ csvSuffix
+
+do csvWriter.setDelimiter(';')
+do csvWriter.setEnclosure('"')
+do csvWriter.setLineEnding("\n") // or "\r\n"
+
+set productSheetIndex = context.session.item('sheetIndex.product')
+do csvWriter.setSheetIndex(productSheetIndex)
+
+do csvWriter.save(csvPath)
+
+do log.info('CSV file with product data created at path ' ~ csvPath ~ '.')
+

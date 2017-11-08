@@ -1,0 +1,15 @@
+set log = context.session.item('log')
+
+set spreadsheet = context.session.item('spreadsheet')
+
+set odsWriter = office.odsWriter(spreadsheet)
+
+set spreadsheetPath = context.session.item('spreadsheetPath')
+
+set odsSuffix = '.ods'
+set odsPath = spreadsheetPath ~ odsSuffix
+
+do odsWriter.save(odsPath)
+
+do log.info('ODS spreadsheet file created at path ' ~ odsPath ~ '.')
+

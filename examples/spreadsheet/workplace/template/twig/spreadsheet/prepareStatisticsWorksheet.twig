@@ -1,0 +1,14 @@
+set spreadsheet = context.session.item('spreadsheet')
+
+set statisticsSheetIndex = 2
+do context.session.addItem('sheetIndex.statistics', statisticsSheetIndex)
+
+do spreadsheet.createSheet
+do spreadsheet.setActiveSheetIndex(statisticsSheetIndex)
+set sheet = spreadsheet.activeSheet
+do sheet.setTitle('Catalog statistics')
+
+set style = sheet.style('A1:A8')
+do style.fill.setFillType('solid').startColor.setARGB('FFC4D9C4')
+do style.font.setBold(true)
+do style.borders.right.setBorderStyle('thin') // Does not work in ods

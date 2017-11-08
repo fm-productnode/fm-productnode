@@ -1,0 +1,23 @@
+set task = data.task
+
+set log = context.session.item('log')
+
+set productCount = catalogViewer.productCount
+
+if productCount < 1
+	do log.warn('The product catalog contains no products!')
+else
+	do log.info('The product catalog contains ' ~ productCount ~ ' products.')
+
+  for productIndex in 0..(productCount - 1)
+    set product = catalogViewer.productByIndex(productIndex)
+		do context.session.addItem('product', product)
+
+		do task.setTemplateName('bmecat/getProductAttributes').process
+
+		do task.setTemplateName('addProductToSpreadsheet').addContext('productIndex', productIndex).process
+
+  	do log.info('Product No. ' ~ (productIndex + 1) ~ ' inserted in the spreadsheet.')
+  endfor
+endif
+

@@ -1,0 +1,24 @@
+set task = data.task
+
+set product = context.session.item('product')
+
+set properties = product.properties
+do context.session.addItem('properties', properties)
+
+set id = product.supplierProductId|left(50)
+
+set shortDescription = properties.shortDescription|left(150)
+set longDescription = properties.longDescription|left(5000)|default('DESCRIPTION MISSING')
+
+set productLink = task.setTemplateName('bmecat/getProductLink').process
+
+set imageLink = task.setTemplateName('bmecat/getImageLink').process
+
+set price = task.setTemplateName('bmecat/getPrice').process
+
+set gtin = task.setTemplateName('bmecat/getGtin').process
+
+set productAttributes = [ id, shortDescription, longDescription, productLink, imageLink, 'in_stock', price, gtin, 'neu', 'nein', 'DE::10 EUR' ]
+
+do context.session.addItem('attributes', productAttributes)
+

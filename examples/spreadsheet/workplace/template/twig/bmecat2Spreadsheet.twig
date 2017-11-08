@@ -1,0 +1,28 @@
+//
+// Creating spreadsheets (ods + xlsx + csv) from a BMEcat-2005 product catalog
+//
+// Author: Franz Mühlbauer, info@fm-productnode.de
+//
+
+// Prepare
+
+set task = data.task
+
+set log = utilities.log('INFO')
+do context.session.addItem('log', log)
+
+set spreadsheetPath = spreadsheetPath|default('productData') // without file suffix
+do context.session.addItem('spreadsheetPath', spreadsheetPath)
+
+set language = language|default('deu')
+set catalogViewer = repository.currentCatalog.viewer(language)
+
+do task.setTemplateName('spreadsheet/prepare').process
+
+// Collect attributes, insert in spreadsheet and save
+
+do task.setTemplateName('addMetadataToSpreadsheet').addContext('catalogViewer', catalogViewer).process
+do task.setTemplateName('addStatisticsToSpreadsheet').addContext('catalogViewer', catalogViewer).process
+do task.setTemplateName('addProductsToSpreadsheet').addContext('catalogViewer', catalogViewer).process
+
+do task.setTemplateName('spreadsheet/save').process

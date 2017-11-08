@@ -1,0 +1,11 @@
+set properties = context.session.item('properties')
+set log = context.session.item('log')
+
+set gtin = properties.internationalPids|first
+set pidType = properties.internationalPidType(gtin)
+if pidType not in [ 'gtin', 'ean' ]
+  set gtin = properties.manufacturerPid|default('GTIN MISSING')
+  do log.error("Couldn't find a valid GTIN or EAN.")
+endif
+
+print gtin

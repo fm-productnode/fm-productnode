@@ -1,0 +1,17 @@
+set spreadsheet = context.session.item('spreadsheet')
+
+set productSheetIndex = 0
+do context.session.addItem('sheetIndex.product', productSheetIndex)
+
+do spreadsheet.setActiveSheetIndex(productSheetIndex)
+set sheet = spreadsheet.activeSheet
+do sheet.setTitle('Product catalog')
+
+set header = [ 'ID', 'Titel', 'Beschreibung', 'Link', 'Bildlink', 'Verfügbarkeit', 'Preis', 'gtin', 'Zustand', 'nicht_​jugendfrei', 'Versandkosten' ]
+
+do sheet.fromArray(header, null,'A1')
+
+set style = sheet.style('A1:K1')
+do style.fill.setFillType('solid').startColor.setARGB('FFC4D9C4')
+do style.font.setBold(true)
+do style.borders.bottom.setBorderStyle('thin') // Does not work in ods

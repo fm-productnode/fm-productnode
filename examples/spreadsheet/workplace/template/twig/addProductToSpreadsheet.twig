@@ -1,0 +1,29 @@
+set productAttributes = context.session.item('attributes')
+
+set spreadsheet = context.session.item('spreadsheet')
+set productSheetIndex = context.session.item('sheetIndex.product')
+
+do spreadsheet.setActiveSheetIndex(productSheetIndex)
+set sheet = spreadsheet.activeSheet
+
+set rowIndex = productIndex + 2
+
+set rowCoordinate = 'A' ~ rowIndex
+do sheet.fromArray(productAttributes, null, rowCoordinate)
+
+// Change productLink to clickable url - does not work in ods
+set productLink = productAttributes[3] // Index 3 correspondes to column D
+
+if productLink is valid_url
+  set productLinkCoordinate = 'D' ~ rowIndex
+  do sheet.cell(productLinkCoordinate).hyperlink.setUrl(productLink)
+endif
+
+// Change imageLink to clickable url - does not work in ods
+set imageLink = productAttributes[4] // Index 4 correspondes to column E
+
+if imageLink is valid_url
+  set imageLinkCoordinate = 'E' ~ rowIndex
+  do sheet.cell(imageLinkCoordinate).hyperlink.setUrl(imageLink)
+endif
+

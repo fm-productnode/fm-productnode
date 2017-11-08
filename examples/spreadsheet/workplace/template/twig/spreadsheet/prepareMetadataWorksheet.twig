@@ -1,0 +1,14 @@
+set spreadsheet = context.session.item('spreadsheet')
+
+set metadataSheetIndex = 1
+do context.session.addItem('sheetIndex.metadata', metadataSheetIndex)
+
+do spreadsheet.createSheet
+do spreadsheet.setActiveSheetIndex(metadataSheetIndex)
+set sheet = spreadsheet.activeSheet
+do sheet.setTitle('Catalog metadata')
+
+set style = sheet.style('A1:A10')
+do style.fill.setFillType('solid').startColor.setARGB('FFC4D9C4')
+do style.font.setBold(true)
+do style.borders.right.setBorderStyle('thin') // Does not work in ods

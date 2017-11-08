@@ -1,0 +1,15 @@
+set product = context.session.item('product')
+set log = context.session.item('log')
+
+set priceProperties = product.pricePropertiesByIndex.productPriceByIndex
+
+set price = priceProperties.amount
+set currency = priceProperties.currency
+set priceType = priceProperties.type
+if priceType == 'net_list'
+  set taxFactor = priceProperties.taxPropertiesByIndex.taxFactor
+  set price = price * (1 + taxFactor)
+	do log.info('Taxes are added to the net price of the product.')
+endif
+
+print price|number_format(2, '.', ',') ~ " " ~ currency

@@ -1,0 +1,12 @@
+// Prepare
+
+set task = data.task
+
+set office = utilities.useExtension('Office')
+
+// Save to filesystem
+
+do task.setTemplateName('spreadsheet/saveOds').addContext('office', office).process
+do task.setTemplateName('spreadsheet/saveExcel').addContext('office', office).process
+do task.setTemplateName('spreadsheet/saveCsv').addContext('office', office).process
+

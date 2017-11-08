@@ -1,0 +1,21 @@
+set product = context.session.item('product')
+set log = context.session.item('log')
+
+set imageLinkPrefix = 'https:\/\/www.huber-electronen.de/image/'
+
+set mimeType = product.mimeInfoByIndex.type
+
+set imageLink = product.mimeInfoByIndex.source
+
+if mimeType == 'url'
+  set imageLink = imageLink|left(2000)
+else
+  set imageLink = imageLinkPrefix ~ imageLink|left(2000)
+endif
+
+if not imageLink matches '#\.(gif|jpg|jpeg|png|bmp|tif|tiff)$#'
+  set imageLink = 'INVALID IMAGE'
+  do log.error("Couldn't find a valid product image link.")
+endif
+
+print imageLink

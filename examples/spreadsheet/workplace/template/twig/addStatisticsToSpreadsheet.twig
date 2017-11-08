@@ -1,0 +1,33 @@
+// Prepare
+
+set log = context.session.item('log')
+
+set spreadsheet = context.session.item('spreadsheet')
+set statisticsSheetIndex = context.session.item('sheetIndex.statistics')
+
+do spreadsheet.setActiveSheetIndex(statisticsSheetIndex)
+set sheet = spreadsheet.activeSheet
+
+// Collect attributes and insert in spreadsheet
+//
+// Note: trim is used to force conversion to string
+
+do sheet.fromArray([ 'Anzahl Produkte', catalogViewer.productCount|trim ],	null,'A1') 
+do sheet.fromArray([ 'Anzahl Klassifikationssysteme', catalogViewer.classificationCount|trim ],	null,'A2')
+
+set hasGroup = catalogViewer.hasCatalogGroup ? 'Ja' : 'Nein'
+do sheet.fromArray([ 'Kataloggruppe vorhanden', hasGroup ],	null,'A3')
+
+do sheet.fromArray([ 'Anzahl Formeln', catalogViewer.formulaCount|trim ],	null,'A4')
+do sheet.fromArray([ 'Anzahl IPPs', catalogViewer.ippDefinitionCount|trim ],	null,'A5')
+
+set metadata = catalogViewer.metadata
+do sheet.fromArray([ 'Anzahl Parteien', metadata.partyCount|trim ],  null,'A6')
+do sheet.fromArray([ 'Anzahl Sprachen', metadata.languages|length ], null,'A7')
+
+do sheet.fromArray([ 'Anzahl Rahmenverträge', metadata.agreementCount|trim ], null,'A8')
+
+do sheet.columnDimension('A').setAutoSize(true) // does not work in ods
+
+do log.info('Catalog statistics added to spreadsheet.')
+

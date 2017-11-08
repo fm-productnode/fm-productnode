@@ -1,0 +1,32 @@
+set log = context.session.item('log')
+
+set spreadsheet = context.session.item('spreadsheet')
+set metadataSheetIndex = context.session.item('sheetIndex.metadata')
+
+do spreadsheet.setActiveSheetIndex(metadataSheetIndex)
+set sheet = spreadsheet.activeSheet
+
+set metadata = catalogViewer.metadata
+
+do sheet.fromArray([ 'Katalog-ID', metadata.identifier ], 														null,'A1')
+do sheet.fromArray([ 'Katalog-Version', metadata.version ], 													null,'A2')
+do sheet.fromArray([ 'Katalog-Name', metadata.name ], 																null,'A3')
+do sheet.fromArray([ 'Ersteller', metadata.generatorInfo ], 													null,'A4')
+
+do sheet.fromArray([ 'Erstellungs-Datum', metadata.generationDate.date ], 						null,'A5')
+do sheet.style('A5').numberFormat.setFormatCode('yyyy-mm-dd')
+
+do sheet.fromArray([ 'Gültigkeitszeitraum von', metadata.defaults.validStart.date ],	null,'A6')
+do sheet.style('A6').numberFormat.setFormatCode('yyyy-mm-dd')
+
+do sheet.fromArray([ 'Gültigkeitszeitraum bis', metadata.defaults.validEnd.date ],		null,'A7')
+do sheet.style('A7').numberFormat.setFormatCode('yyyy-mm-dd')
+
+do sheet.fromArray([ 'Verwendete Sprachen', metadata.languages|join(', ') ], 					null,'A8')
+do sheet.fromArray([ 'Vorgabe-Währung', metadata.defaults.currency ], 								null,'A9')
+do sheet.fromArray([ 'Transaktion', metadata.transaction ], 													null,'A10')
+
+do sheet.columnDimension('A').setAutoSize(true) // does not work in ods
+
+do log.info('Catalog metadata added to spreadsheet.')
+

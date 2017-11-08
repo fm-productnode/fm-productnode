@@ -1,0 +1,15 @@
+set log = context.session.item('log')
+
+set spreadsheet = context.session.item('spreadsheet')
+
+set excelWriter = office.excelWriter(spreadsheet)
+
+set spreadsheetPath = context.session.item('spreadsheetPath')
+
+set excelSuffix = '.xlsx'
+set excelPath = spreadsheetPath ~ excelSuffix
+
+do excelWriter.save(excelPath)
+
+do log.info('Excel spreadsheet file created at path ' ~ excelPath ~ '.')
+

@@ -1,0 +1,23 @@
+set office = utilities.useExtension('Office')
+
+if not office
+	set log = context.session.item('log')
+	do log.error("The spreadsheet extension couldn't be embedded.")
+else
+  set spreadsheet = office.spreadsheet
+  do context.session.addItem('spreadsheet', spreadsheet)
+
+  set properties = spreadsheet.properties
+  do properties.setCreator('fm-ProductNode')
+  do properties.setLastModifiedBy('fm-ProductNode')
+  do properties.setTitle('Product Catalog')
+  do properties.setSubject('Product Catalog')
+  do properties.setDescription('Product Catalog created from a BMEcat 2005 document.')
+  do properties.setKeywords('product catalog datafeed statistics')
+  do properties.setCategory('product catalog')
+
+	do data.task.setTemplateName('spreadsheet/prepareMetadataWorksheet').process
+	do data.task.setTemplateName('spreadsheet/prepareStatisticsWorksheet').process
+	do data.task.setTemplateName('spreadsheet/prepareProductWorksheet').process
+endif
+

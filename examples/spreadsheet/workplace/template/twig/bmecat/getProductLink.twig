@@ -1,0 +1,10 @@
+set product = context.session.item('product')
+set log = context.session.item('log')
+
+set productLink = product.mimeInfoByIndex(3).source|left(2000)
+if productLink is not valid_url
+  set productLink = 'INVALID LINK'
+  do log.error("Couldn't find a valid product link.")
+endif
+
+print productLink
