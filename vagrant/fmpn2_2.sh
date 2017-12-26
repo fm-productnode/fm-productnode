@@ -65,11 +65,11 @@ sudo curl -SL "https://downloads.ioncube.com/loader_downloads/ioncube_loaders_li
 	&& sudo ln -s /etc/php/7.0/mods-available/ioncube_loader.ini /etc/php/7.0/cli/conf.d/01-ioncube_loader.ini
 
 #
-# fm-ProductNode Release 2.1
+# fm-ProductNode Release 2.2
 #
 
 mkdir -p /home/ubuntu/fm-productnode \
-	&& curl -SL "https://muehlbauer.ocloud.de/index.php/s/tv0OE2NkHEUQaa5/download" \
+	&& curl -SL "https://muehlbauer.ocloud.de/index.php/s/vXgG3ZfxednY9Ff/download" \
 		-o /home/ubuntu/fm-productnode/fmProductNode.tar.gz \
 	&& tar -xof /home/ubuntu/fm-productnode/fmProductNode.tar.gz -C /home/ubuntu/fm-productnode \
 	&& sudo chown -R ubuntu:ubuntu /home/ubuntu/fm-productnode \
