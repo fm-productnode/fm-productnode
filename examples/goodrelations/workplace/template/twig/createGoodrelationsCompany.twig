@@ -1,0 +1,62 @@
+//
+// Creating a GoodRelations business entity using the metadata of a BMEcat-2005 product catalog
+//
+// Author: Franz Muehlbauer, info@fm-productnode.de
+//
+
+set session = context.session
+set xml = data.xml
+
+set log = utilities.log('INFO')
+
+set language = session.item('language')
+
+set languageMap = [ { 'source': 'eng', 'destination': 'en' }, { other_destination: 'de' } ]
+set beLanguage = language|map(languageMap)
+
+set companyFileName = 'company.rdf'
+
+set beStrippedName = session.item('meta.name')|replace({' ': ''})
+set beId = session.item('meta.url') ~ '/data/rdf/' ~ companyFileName ~ '#be_' ~ beStrippedName
+set beAddress =  session.item('meta.url') ~ '/data/rdf/' ~ companyFileName ~ '#address_' ~ beStrippedName
+
+set xmlString = 'http:\/\/www.w3.org/2001/XMLSchema#string'
+set xmlNamespace = 'http:\/\/www.w3.org/2000/xmlns/'
+set rdfNamespace = 'http:\/\/www.w3.org/1999/02/22-rdf-syntax-ns#'
+set foafNamespace = 'http:\/\/xmlns.com/foaf/0.1/'
+set vcardNamespace = 'http:\/\/www.w3.org/2006/vcard/ns#'
+set goodrelationsNamespace = 'http:\/\/purl.org/goodrelations/v1#'
+
+do xml.namespace('rdf', rdfNamespace)
+do xml.namespace('foaf', foafNamespace)
+do xml.namespace('vcard', vcardNamespace)
+do xml.namespace('gr', goodrelationsNamespace)
+
+set rdf = xml.addChild('rdf:RDF', true)
+do rdf.0.setAttributeNS(xmlNamespace, 'xmlns:foaf', foafNamespace)
+do rdf.0.setAttributeNS(xmlNamespace, 'xmlns:vcard', vcardNamespace)
+do rdf.0.setAttributeNS(xmlNamespace, 'xmlns:gr', goodrelationsNamespace)
+
+set be = rdf.addChild('gr:BusinessEntity', {'rdf:about' : beId}, true)
+
+do be.addChild('vcard:tel', session.item('meta.phone'))
+do be.addChild('vcard:fn', session.item('meta.name'), {'xml:lang' : beLanguage})
+do be.addChild('vcard:fax', session.item('meta.fax'))
+do be.addChild('foaf:page', {'rdf:resource' : session.item('meta.url')})
+do be.addChild('gr:hasDUNS', session.item('meta.duns'), {'rdf:datatype' : xmlString})
+
+set adr = be.addChild('vcard:adr', true)
+set address = adr.addChild('vcard:Address', {'rdf:about' : beAddress}, true)
+do address.addChild('vcard:country-name', session.item('meta.country'), {'xml:lang' : beLanguage})
+do address.addChild('vcard:post-office-box', session.item('meta.postOfficeBox'), {'xml:lang' : beLanguage})
+do address.addChild('vcard:postal-code', session.item('meta.zipCode'), {'rdf:datatype' : xmlString})
+do address.addChild('vcard:locality', session.item('meta.city'), {'xml:lang' : beLanguage})
+
+do be.addChild('vcard:email', session.item('meta.eMail'), {'rdf:datatype' : xmlString})
+do be.addChild('gr:legalName', session.item('meta.name'), {'xml:lang' : beLanguage})
+do be.addChild('vcard:url', {'rdf:resource' : session.item('meta.url')})
+
+do xml.save(companyFileName)
+
+do log.info('Catalog metadata converted to RDF company profile.')
+

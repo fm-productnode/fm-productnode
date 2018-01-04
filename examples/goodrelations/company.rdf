@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:vcard="http://www.w3.org/2006/vcard/ns#" xmlns:gr="http://purl.org/goodrelations/v1#">
+  <gr:BusinessEntity rdf:about="http://www.ikea.com/data/rdf/company.rdf#be_IKEAINTERNATIONAL">
+    <vcard:tel>+46-42-267-100</vcard:tel>
+    <vcard:fn xml:lang="en">IKEA INTERNATIONAL</vcard:fn>
+    <vcard:fax>+46-42-132-805</vcard:fax>
+    <foaf:page rdf:resource="http://www.ikea.com"/>
+    <gr:hasDUNS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">792837239</gr:hasDUNS>
+    <vcard:adr>
+      <vcard:Address rdf:about="http://www.ikea.com/data/rdf/company.rdf#address_IKEAINTERNATIONAL">
+        <vcard:country-name xml:lang="en">Sweden</vcard:country-name>
+        <vcard:post-office-box xml:lang="en">640</vcard:post-office-box>
+        <vcard:postal-code rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SE 25 106</vcard:postal-code>
+        <vcard:locality xml:lang="en">Helsinborg</vcard:locality>
+      </vcard:Address>
+    </vcard:adr>
+    <vcard:email rdf:datatype="http://www.w3.org/2001/XMLSchema#string">info@ikea.com</vcard:email>
+    <gr:legalName xml:lang="en">IKEA INTERNATIONAL</gr:legalName>
+    <vcard:url rdf:resource="http://www.ikea.com"/>
+  </gr:BusinessEntity>
+</rdf:RDF>

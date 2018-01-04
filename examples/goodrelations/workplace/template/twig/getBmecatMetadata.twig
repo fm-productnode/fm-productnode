@@ -1,0 +1,44 @@
+//
+// Retrieving metadata from a BMEcat-2005 product catalog
+//
+// Author: Franz Muehlbauer, info@fm-productnode.de
+//
+
+set session = context.session
+
+set log = utilities.log('INFO')
+
+set metadata = catalogViewer.metadata
+
+if not metadata.hasParties
+  do session.addItem('meta.hasParty', false)
+
+  do log.warn('No business entity data available.')
+else
+	set party = metadata.partyByIndex
+	if not party.hasAddress
+    do session.addItem('meta.hasParty', false)
+
+		do log.warn('No address of the business entity available.')
+	else
+    do session.addItem('meta.hasParty', true)
+
+		set address = party.address
+
+    do session.addItem('meta.name', address.name|default('NAME_MISSING'))
+    do session.addItem('meta.phone', address.phone|default('PHONE_MISSING'))
+    do session.addItem('meta.fax', address.fax|default('FAX_MISSING'))
+    do session.addItem('meta.postOfficeBox', address.boxNo|default('POST_OFFICE_BOX_MISSING'))
+    do session.addItem('meta.zipCode', address.zip|default('ZIP_CODE_MISSING'))
+    do session.addItem('meta.city', address.city|default('CITY_MISSING'))
+    do session.addItem('meta.eMail', address.eMails|first|default('EMAIL_MISSING'))
+    do session.addItem('meta.url', address.url|default('URL_MISSING'))
+    do session.addItem('meta.duns', party.ids|first)
+
+		set countryPlain = metadata.content('party.0.address.country')|first // concrete Task-API only exposes country code
+    do session.addItem('meta.country', countryPlain|default('COUNTRY_MISSING'))
+
+		do log.info('Catalog metadata grabbed.')
+	endif
+endif
+

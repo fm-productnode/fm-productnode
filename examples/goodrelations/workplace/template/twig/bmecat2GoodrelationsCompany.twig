@@ -1,0 +1,32 @@
+//
+// Convertion of a BMEcat-2005 product catalog to the GoodRelations business entity ontology
+//
+// Author: Franz Muehlbauer, info@fm-productnode.de
+//
+//
+// Usage example:
+//	 php trans.php catalog.read --alias ikea workplace/bmecat/ikea_corrected.xml
+//   php trans.php task.process --alias ikea --template bmecat2GoodrelationsCompany
+//
+// It is assumed that the templates are located in the workplace/template/twig subdirectory.
+//
+
+// Prepare
+
+set task = data.task
+
+set language = language|default('eng')
+do context.session.addItem('language', language)
+
+set catalogViewer = repository.currentCatalog.viewer(language)
+
+// Collect catalog metadata
+
+do task.setTemplateName('getBmecatMetadata').addContext('catalogViewer', catalogViewer).process
+
+// Create rdf business entity and save in file if company data is available in catalog metadata
+
+if context.session.item('meta.hasParty')
+	do task.setTemplateName('createGoodrelationsCompany').process
+endif
+
