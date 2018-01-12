@@ -57,11 +57,11 @@ ENV FMPN_WORKDIR /var/fm-productnode
 WORKDIR ${FMPN_WORKDIR}
 
 #
-# fm-ProductNode Release 2.2
+# fm-ProductNode Release 2.3
 #
 
 RUN set -x \
-	&& curl -SL "https://muehlbauer.ocloud.de/index.php/s/vXgG3ZfxednY9Ff/download" \
+	&& curl -SL "http://muehlbauer.ocloud.de/index.php/s/tRA49adJgsNRaFE/download" \
 		-o ${FMPN_WORKDIR}/fmProductNode.tar.gz \
 	&& tar -xof ${FMPN_WORKDIR}/fmProductNode.tar.gz -C ${FMPN_WORKDIR} \
 	&& rm ${FMPN_WORKDIR}/fmProductNode.tar.gz

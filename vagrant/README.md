@@ -1,7 +1,7 @@
 # Vagrant
 
 The folder contains a Vagrantfile and a provisioning shell script to create a
-virtual machine (VagrantBox) to get started with fm-ProductNode release 2.2.
+virtual machine (VagrantBox) to get started with fm-ProductNode release 2.3.
 
 The scripts might also be helpful as a reference if there are questions or problems arising during the manual installation of fm-ProductNode.
 

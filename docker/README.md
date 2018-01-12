@@ -1,6 +1,6 @@
 # Docker
 
-The folder contains a Dockerfile to get started with fm-ProductNode release 2.2.
+The folder contains a Dockerfile to get started with fm-ProductNode release 2.3.
 
 The Dockerfile might also be helpful as a reference if there are questions or problems arising during the manual installation of fm-ProductNode.
 
@@ -22,7 +22,7 @@ docker pull php:7.0.24-cli
 
 Create a Docker container:
 ```
-docker build -t fmpn/fmpn:2.2.0 <path_to_docker>
+docker build -t fmpn/fmpn:2.3.0 <path_to_docker>
 ```
 
 where *path_to_docker* is the path to the directory containing the Dockerfile.
@@ -32,7 +32,7 @@ Execute a shell command in the Docker container:
 docker run -it --rm --name fmpn \
   -v <path_to_bmecat_documents>:/var/fm-productnode/workplace/bmecat \
   -v <path_to_credits_file>:/var/fm-productnode/credits \
-  fmpn/fmpn:2.2.0 \
+  fmpn/fmpn:2.3.0 \
   <shell_command>
 ```
 
@@ -41,7 +41,7 @@ Example:
 docker run -it --rm --name fmpn \
   -v <path_to_bmecat_documents>:/var/fm-productnode/workplace/bmecat \
   -v <path_to_credits_file>:/var/fm-productnode/credits \
-  fmpn/fmpn:2.2.0 \
+  fmpn/fmpn:2.3.0 \
   php trans catalog.read workplace/bmecat/MyBMEcatDocument.xml
 ```
 
